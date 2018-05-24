@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="tcs.abx.liveopssample">
+
+    <application
+        android:name="com.igaworks.IgawDefaultApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <data android:scheme="liveops" android:host="sample" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+
+        <meta-data android:name="igaworks_app_key" android:value="이곳에_앱키를_입력하세요" />
+        <meta-data android:name="igaworks_hash_key" android:value="이곳에_해시키를_입력하세요" />
+
+
+
+        <!-- IGAWorks GCM Broadcast Receiver -->
+        <receiver android:name="com.igaworks.liveops.pushservice.LiveOpsGCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="tcs.abx.liveopssample" />
+            </intent-filter>
+        </receiver>
+
+        <!-- IGAWorks Push Service -->
+        <service android:enabled="true" android:name="com.igaworks.liveops.pushservice.GCMIntentService" />
+
+        <!-- Client Push App Receiver -->
+        <receiver android:name="com.igaworks.liveops.pushservice.LiveOpsReceiver"
+            android:permission="tcs.abx.liveopssample.permission.C2D_MESSAGE">
+            <intent-filter>
+                <action android:name="com.igaworks.liveops.pushservice.CLIENT_PUSH_RECEIVE"/>
+            </intent-filter>
+        </receiver>
+
+
+
+    </application>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <!-- C2DM Permission -->
+    <permission android:name="tcs.abx.liveopssample.permission.C2D_MESSAGE" android:protectionLevel = "signature"/>
+    <uses-permission android:name="tcs.abx.liveopssample.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+
+    <!-- Support Android OREO version -->
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="26"/>
+
+</manifest>
